@@ -70,9 +70,17 @@ class Action():
     def __hash__(self):
         return hash((self.x, self.y, self.player))
 
-
-initialState = NaughtsAndCrossesState()
 mcts = mcts(timeLimit=1000)
-action = mcts.search(initialState=initialState)
+initialState = NaughtsAndCrossesState()
 
-print(action)
+for i in range(1,100):
+    action = mcts.search(initialState=initialState)
+    initialState = initialState.takeAction(action)
+    print(action)
+    if (initialState.isTerminal()):
+        print(initialState.getReward())
+        initialState = NaughtsAndCrossesState()
+
+        
+# go a little deeper into the tree
+print(list(list(mcts.root.children.values())[0].children.values())[0].totalReward)
